@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import classes from "./Cockpit.css";
 import Aux from "../../hoc/auxiliary";
 
@@ -6,15 +6,17 @@ const cockpit = (props) => {
   console.log("[Cockpit] rendring...    React.version = ", React.version);
   console.log(" Cockpit PROPS = ", props);
 
+  let btnRef = useRef();
+
 
   useEffect(() => {
     console.log("[Cockpit.js] useEffect... ", props.personsLength);
     // here Http request can be executed
-    // it execute on every render cycle of cockpit
-    setTimeout(() => {
-      alert("data saved on cloud");
-    }, 1000)
-
+    // it execute after every render cycle 
+    // setTimeout(() => {
+    //   alert("data saved on cloud");
+    // }, 1000)
+    btnRef.current.click();
     return () => {
       console.log("[Cockpit.js] cleaning useEffect", props.personsLength)
     }
@@ -47,6 +49,7 @@ const cockpit = (props) => {
         <h1>{props.title}</h1>
         <p className={assignedClasses.join( ' ' )}>This is really working!</p>
         <button
+          ref = {btnRef}
           className={btnClass}
           onClick={props.clicked}>Toggle Persons</button>
       </div>
