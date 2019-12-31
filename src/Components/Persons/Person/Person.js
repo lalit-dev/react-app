@@ -8,6 +8,17 @@ import withClass from './../../../hoc/withClass';
 
 //****************   Implementation of Person component using classes   *************/
 class Person extends Component {
+    constructor(){
+        super();
+        this.inputElementRef = React.createRef();
+    }
+
+    componentDidMount(){
+            // this.inputElement.focus(); // #approach 1         focus on input element                supported by older react versions
+            this.inputElementRef.current.focus(); // #approach 2         focus on input element        supported by react ^16.3.0
+
+    }
+
 
     render(){
         console.log("[Person] rendring.. ");
@@ -18,11 +29,14 @@ class Person extends Component {
                 <p>{this.props.children}</p>
                 <input 
                 type="text" 
-                ref = {(inputElement) => {
-                    console.log("inputElement = ", inputElement);
-                    this.inputElement = inputElement;
-                    inputElement.focus();
-                }} 
+                // ref = {(inputElement) => {
+                //     console.log("inputElement = ", inputElement);
+                //     this.inputElement = inputElement;
+                // }}                                                                     //    #approach 1
+
+                ref = {this.inputElementRef}
+
+
                 onChange={this.props.changed} 
                 value={this.props.name} />
             {/* </div> */}
