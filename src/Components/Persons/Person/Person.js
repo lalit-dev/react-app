@@ -14,8 +14,10 @@ class Person extends Component {
         this.inputElementRef = React.createRef();
     }
 
+    static contextType = AuthContext;
+
     componentDidMount(){
-            // this.inputElement.focus(); // #approach 1         focus on input element                supported by older react versions
+            // this.inputElement.focus(); // #approach 1                 focus on input element        supported by older react versions
             this.inputElementRef.current.focus(); // #approach 2         focus on input element        supported by react ^16.3.0
 
     }
@@ -25,13 +27,11 @@ class Person extends Component {
     }
 
     render(){
-        console.log("[Person] rendring.. ");
+        console.log("[Person] rendring.. this = ",this);
         return (
             <Aux>
             {/* <div className={classes.Person}> */}
-                <AuthContext.Consumer>{(context) => {
-                   return context.authenticated ? <p>Authenticated</p> : <p>Please Log In</p>}}
-                </AuthContext.Consumer>
+                   {this.context.authenticated ? <p>Authenticated</p> : <p>Please Log In</p>}
                 <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
                 <p>{this.props.children}</p>
                 <input 
