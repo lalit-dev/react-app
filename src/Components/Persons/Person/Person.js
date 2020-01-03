@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classes from './Person.css';
 import Aux from './../../../hoc/auxiliary';
 import withClass from './../../../hoc/withClass';
+import AuthContext from './../../../Context/auth-context';
 
 
 //****************   Implementation of Person component using classes   *************/
@@ -19,12 +20,18 @@ class Person extends Component {
 
     }
 
+    componentDidUpdate() {
+        console.log("[Person] componentDidUpdate..");
+    }
 
     render(){
         console.log("[Person] rendring.. ");
         return (
             <Aux>
             {/* <div className={classes.Person}> */}
+                <AuthContext.Consumer>{(context) => {
+                   return context.authenticated ? <p>Authenticated</p> : <p>Please Log In</p>}}
+                </AuthContext.Consumer>
                 <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
                 <p>{this.props.children}</p>
                 <input 
@@ -34,7 +41,7 @@ class Person extends Component {
                 //     this.inputElement = inputElement;
                 // }}                                                                     //    #approach 1
 
-                ref = {this.inputElementRef}
+                ref = {this.inputElementRef}                                              //    #approach 2
 
 
                 onChange={this.props.changed} 

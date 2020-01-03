@@ -11,18 +11,18 @@ class Persons extends Component {
   }
 
   static getDerivedStateFromProps (props, state){
-    console.log("[Persons.js]  getDerivedStateFromProps...");
+    console.log("[Persons.js]  getDerivedStateFromProps...    props = ", props);
     return state
   }
 
   shouldComponentUpdate(nextProps, nextState){
     console.log("[Persons.js]  shouldComponentUpdate...");
-    if(nextProps.persons !== this.props.persons){
-      return true;
-    } else {
-      return false;
-    }
-    // return true;
+    // if(nextProps.persons !== this.props.persons){
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return true;
   }
 
 
@@ -37,7 +37,7 @@ class Persons extends Component {
   }
 
   render(){
-    console.log("[Persons.js]  rendring...");
+    console.log("[Persons.js]  rendring...", this.props);
     return this.props.persons.map( ( person, index ) => {
       return <Person
         click={() => this.props.clicked( index )}

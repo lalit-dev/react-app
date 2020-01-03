@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import classes from "./Cockpit.css";
 import Aux from "../../hoc/auxiliary";
+import AuthContext from './../../Context/auth-context';
 
 const cockpit = (props) => {
   console.log("[Cockpit] rendring...    React.version = ", React.version);
@@ -44,15 +45,20 @@ const cockpit = (props) => {
 
 
 
-  return(
-      <div className = {classes.Cockpit}>
-        <h1>{props.title}</h1>
-        <p className={assignedClasses.join( ' ' )}>This is really working!</p>
-        <button
-          ref = {btnRef}
-          className={btnClass}
-          onClick={props.clicked}>Toggle Persons</button>
-      </div>
+  return (
+    <div className={classes.Cockpit}>
+      <h1>{props.title}</h1>
+      <p className={assignedClasses.join(' ')}>This is really working!</p>
+      <button
+        ref={btnRef}
+        className={btnClass} 
+        onClick={props.clicked}>Toggle Persons</button>
+      <AuthContext.Consumer>{(context) => {
+        return (
+          <button onClick={context.login}>Log In</button>
+        );
+      }}</AuthContext.Consumer>
+    </div>
   );
 
   // return (

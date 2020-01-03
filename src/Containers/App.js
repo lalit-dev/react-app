@@ -4,6 +4,7 @@ import Persons from '../Components/Persons/Persons';
 import Cockpit from '../Components/Cockpit/Cockpit';
 import withClass from '../hoc/withClass';
 import Aux from '../hoc/auxiliary';
+import AuthContext from './../Context/auth-context';
 
 class App extends Component {
   constructor(props) {
@@ -37,7 +38,8 @@ class App extends Component {
     otherState: 'some other value',
     showPersons: false,
     showCockpit: true,
-    changeCounter: 0
+    changeCounter: 0,
+    authenticated: false
   }
 
   nameChangedHandler = (event, id) => {
@@ -57,10 +59,10 @@ class App extends Component {
     persons[personIndex] = person;
 
     this.setState((prevState, props) => {
-      return { 
+      return {
         persons: persons,
         changeCounter: prevState.changeCounter + 1
-       }
+      }
     });
   }
 
@@ -74,6 +76,11 @@ class App extends Component {
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({ showPersons: !doesShow });
+  }
+
+  login = () => {
+    this.setState({ authenticated: true });
+    console.log("STATE = ", this.state);
   }
 
   render() {
@@ -95,32 +102,34 @@ class App extends Component {
 
     /******************   HOC withClass approach 1  */
     // return (
-      // <WithClass classes={classes.App}>
-      //   <button onClick={() => { this.setState({showCockpit : !this.state.showCockpit}) }}>Remove Cockpit</button>
-      //   {this.state.showCockpit ?
-      //     <Cockpit
-      //       title={this.props.title}
-      //       clicked={this.togglePersonsHandler}
-      //       personsLength={this.state.persons.length}
-      //       showPersons={this.state.showPersons} />
-      //     : null}
-      //   {persons}
-      // </WithClass>
+    // <WithClass classes={classes.App}>
+    //   <button onClick={() => { this.setState({showCockpit : !this.state.showCockpit}) }}>Remove Cockpit</button>
+    //   {this.state.showCockpit ?
+    //     <Cockpit
+    //       title={this.props.title}
+    //       clicked={this.togglePersonsHandler}
+    //       personsLength={this.state.persons.length}
+    //       showPersons={this.state.showPersons} />
+    //     : null}
+    //   {persons}
+    // </WithClass>
     // );
 
 
     /********************  HOC withClass approach 2  */
     return (
       <Aux>
-        <button onClick={() => { this.setState({showCockpit : !this.state.showCockpit}) }}>Remove Cockpit</button>
-        {this.state.showCockpit ?
-          <Cockpit
-            title={this.props.title}
-            clicked={this.togglePersonsHandler}
-            personsLength={this.state.persons.length}
-            showPersons={this.state.showPersons} />
-          : null}
-        {persons}
+        <button onClick={() => { this.setState({ showCockpit: !this.state.showCockpit }) }}>Remove Cockpit</button>
+        <AuthContext.Provider value={{ authenticated: this.state.authenticated, login: this.login }}>
+          {this.state.showCockpit ?
+            <Cockpit
+              title={this.props.title}
+              clicked={this.togglePersonsHandler}
+              personsLength={this.state.persons.length}
+              showPersons={this.state.showPersons} />
+            : null}
+          {persons}
+        </AuthContext.Provider>
       </Aux>
     );
 
